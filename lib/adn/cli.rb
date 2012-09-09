@@ -25,6 +25,8 @@ module ADN
         show_global_feed
         sleep 4
       }
+    rescue SocketError
+      exit
     end
 
     def show_global_feed
@@ -63,7 +65,7 @@ module ADN
       user_str = "#{p['user']['username']}".ansi(:blue) +
                  " (#{p['user']['name'].strip})".ansi(:yellow)
 
-      id_str   = "id: #{p['id'].ansi(:cyan)}"
+      id_str   = p['id'].ansi(:black)
 
       spaces = ANSI::Terminal.terminal_width -
                ANSI.unansi(user_str + id_str).length
@@ -72,13 +74,13 @@ module ADN
     end
 
     def colorized_text(p)
-      text_color = p['user']['follows_you'] ? :magenta : :white
+      text_color = p['user']['follows_you'] ? :cyan : :white
       text_color = :green if p['user']['you_follow']
 
       p['text'].ansi(text_color)
     end
 
-    def line(char = '—')
+    def line(char = '_')
       "#{char * ANSI::Terminal.terminal_width}\n".ansi(:black)
     end
   end
