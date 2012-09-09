@@ -11,8 +11,6 @@ require_relative "auth"
 
 module ADN
   class CLI
-    include ANSI::Code
-
     def self.run
       ADN::Auth.retrieve_token unless ADN::Auth.has_token?
       new(ADN::Auth.token)

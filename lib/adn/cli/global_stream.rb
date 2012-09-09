@@ -5,6 +5,9 @@ require 'yaml'
 module ADN
   class CLI
     class GlobalStream
+      include ANSI::Code
+      include ANSI::Terminal
+
       def initialize(user)
         @user = user
       end
@@ -39,23 +42,19 @@ module ADN
       def show_posts(response)
         response['data'].reverse.each { |p|
           puts line + post_heading(p) + colorized_text(p)
-
-          if p['annotations'].any?
-            puts p['annotations'].to_yaml.ansi(:black)
-          end
+          puts p['annotations'].to_yaml.ansi(:black) if p['annotations'].any?
         }
       end
 
       def post_heading(p)
-        user_str = "#{p['user']['username']}".ansi(:blue) +
-                   " (#{p['user']['name'].strip})".ansi(:yellow)
+        heading_line "#{p['user']['username']}".ansi(:blue) +
+                     " (#{p['user']['name'].strip})".ansi(:yellow),
+                     p['id'].ansi(:black)
+      end
 
-        id_str   = p['id'].ansi(:black)
-
-        spaces = ANSI::Terminal.terminal_width -
-                 ANSI.unansi(user_str + id_str).length
-
-        "#{user_str}#{" " * spaces}#{id_str}\n"
+      def heading_line(left,right)
+        spaces = terminal_width - unansi(left + right).length
+        "#{left}#{" " * spaces}#{right}\n"
       end
 
       def colorized_text(p)
@@ -67,7 +66,7 @@ module ADN
       end
 
       def line(char = '_')
-        "#{char * ANSI::Terminal.terminal_width}\n".ansi(:black)
+        "#{char * terminal_width}\n".ansi(:black)
       end
     end
   end
