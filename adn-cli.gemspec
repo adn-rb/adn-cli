@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "adn-cli"
   gem.require_paths = ["lib"]
   gem.version       = ADN::CLI::VERSION
+
+  gem.add_runtime_dependency('adn', '~> 0.3')
 end
