@@ -1,41 +1,4 @@
 #!/usr/bin/env ruby
-require 'webrick'
-require 'pp'
+require_relative '../lib/adn/cli'
 
-TOKEN_FILE = File.expand_path("~/.adn-token")
-AUTH_URL   = "https://alpha.app.net/oauth/authenticate?client_id=AWqdakvYjCn5vkcRtBzBLQxgkXGY4HSf&response_type=token&redirect_uri=http://localhost:9229/authorize/&scope=stream"
-PUBLIC     = File.expand_path(File.dirname(__FILE__)) + "/../public"
-
-class TokenSaver < WEBrick::HTTPServlet::AbstractServlet
-  def do_GET(request, response)
-    Auth.save_token(request.query['access_token'])
-    Auth.server.stop
-  end
-end
-
-module Auth
-  def self.server
-    if @server.nil?
-      @server = WEBrick::HTTPServer.new(:Port => 9229)
-      @server.mount "/authorize", WEBrick::HTTPServlet::FileHandler, PUBLIC
-      @server.mount "/save-token", TokenSaver
-    end
-    @server
-  end
-  
-  def self.save_token(token)
-    File.open(TOKEN_FILE, 'w') {|f| f.write(token) }
-    @token = token
-  end
-
-  def self.token
-    @token ||= IO.read(TOKEN_FILE) if File.exists?(TOKEN_FILE)
-    if @token.nil?
-      system("open \"#{AUTH_URL}\"")
-      server.start
-    end
-    @token
-  end
-end
-
-pp Auth.token
+ADN::CLI.run
