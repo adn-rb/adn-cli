@@ -1,20 +1,10 @@
-# Adn
+# ADN CLI
 
-TODO: Write a gem description
+App.net command line client
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'adn'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install adn
+    
+    $ gem install adn-cli
 
 ## Usage
 
