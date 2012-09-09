@@ -18,7 +18,8 @@ module ADN
   module Auth
     TOKEN_FILE = File.expand_path("~/.adn-cli-token")
     CLIENT_ID  = 'bQQrxrhNXGVNrnZ6dTs6LDHfSfUFSX9Q'
-    AUTH_URL   = "https://alpha.app.net/oauth/authenticate?client_id=#{CLIENT_ID}&response_type=token&redirect_uri=http://localhost:9229/authorize/&scope=stream"
+    SCOPES     = ['stream', 'write_post']
+    AUTH_URL   = "https://alpha.app.net/oauth/authenticate?client_id=#{CLIENT_ID}&response_type=token&redirect_uri=http://localhost:9229/authorize/&scope=#{SCOPES.join(',')}"
     PUBLIC     = File.expand_path(File.dirname(__FILE__)) + "/../../public"
 
     class << self
