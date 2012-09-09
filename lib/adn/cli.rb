@@ -1,5 +1,6 @@
 # encoding: UTF-8
 
+require 'pp'
 require 'adn'
 require 'ansi/core'
 require 'ansi/table'
@@ -22,7 +23,7 @@ module ADN
 
       trap("INT"){ exit }
 
-      global_stream = GlobalStream.new
+      global_stream = GlobalStream.new(get_current_user)
 
       loop {
         global_stream.show
@@ -30,6 +31,10 @@ module ADN
       }
     rescue SocketError
       exit
+    end
+
+    def get_current_user
+      ADN::User.new(ADN::API::Token.current["user"])
     end
   end
 end

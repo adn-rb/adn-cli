@@ -1,8 +1,14 @@
 # encoding: UTF-8
 
+require 'yaml'
+
 module ADN
   class CLI
     class GlobalStream
+      def initialize(user)
+        @user = user
+      end
+
       def show
         get_global_feed.tap { |r|
           show_posts(r)
@@ -15,7 +21,8 @@ module ADN
       def get_global_feed
         params = {
           count: 10,
-          include_directed_posts: 1
+          include_directed_posts: 1,
+          include_annotations: 1
         }
 
         params[:since_id] = @since_id unless @since_id.nil?
@@ -32,6 +39,10 @@ module ADN
       def show_posts(response)
         response['data'].reverse.each { |p|
           puts line + post_heading(p) + colorized_text(p)
+
+          if p['annotations'].any?
+            puts p['annotations'].to_yaml.ansi(:black)
+          end
         }
       end
 
@@ -50,8 +61,9 @@ module ADN
       def colorized_text(p)
         text_color = p['user']['follows_you'] ? :cyan : :white
         text_color = :green if p['user']['you_follow']
+        text_color = :magenta if p['user']['id'] == @user.user_id
 
-        p['text'].ansi(text_color)
+        ANSI.color(text_color) { p['text'] }
       end
 
       def line(char = '_')
