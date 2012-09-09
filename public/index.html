@@ -1,15 +1,38 @@
+<!DOCTYPE html>
 <html>
-<head>
+  <head>
+    <title>Thank you for authorizing adn-cli</title>
+    <style>
+      body {
+        font-family: Helvetica, sans-serif;
+      }
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.4.min.js"></script>
-<script type="text/javascript">
+      .angled {
+        background-color: #C5E0DC;
+        background-image: -webkit-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,
+                transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+                transparent 75%, transparent);
+        background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,
+                transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+                transparent 75%, transparent);
+        background-image: linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,
+                transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+                transparent 75%, transparent);
+      }
 
-$.get("/save-token?" + window.location.hash.substring(1))
-
-</script>
-
-</head>
-
-<body>
-Thank you for authorizing.
-</body>
+      .stripes {
+        -webkit-background-size: 50px 50px;
+        -moz-background-size: 50px 50px;
+        background-size: 50px 50px; /* Controls the size of the stripes */
+      }
+    </style>
+  </head>
+  <body class="angled stripes">
+    <h1>Thank you for authorizing adn-cli</h1>
+    <h2>You can now close this window and return to the terminal.</h2>
+    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript">
+      $.get("/save-token?" + window.location.hash.substring(1));
+    </script>
+  </body>
+</html>
