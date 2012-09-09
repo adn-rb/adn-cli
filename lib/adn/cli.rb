@@ -54,24 +54,32 @@ module ADN
     end
 
     def show_posts(response)
-      response['data'].reverse.each do |p|
-        line
+      response['data'].reverse.each { |p|
+        puts line + post_heading(p) + colorized_text(p)
+      }
+    end
 
-        user_str = "#{p['user']['username']}".ansi(:blue) +
-                   " (#{p['user']['name'].strip})".ansi(:yellow)
+    def post_heading(p)
+      user_str = "#{p['user']['username']}".ansi(:blue) +
+                 " (#{p['user']['name'].strip})".ansi(:yellow)
 
-        id_str   = "id: #{p['id'].ansi(:cyan)}"
+      id_str   = "id: #{p['id'].ansi(:cyan)}"
 
-        spaces = ANSI::Terminal.terminal_width -
-                 ANSI.unansi(user_str + id_str).length
+      spaces = ANSI::Terminal.terminal_width -
+               ANSI.unansi(user_str + id_str).length
 
-        puts "#{user_str}#{" " * spaces}#{id_str}\n\n#{p['text']}"
-      end
+      "#{user_str}#{" " * spaces}#{id_str}\n"
+    end
+
+    def colorized_text(p)
+      text_color = p['user']['follows_you'] ? :magenta : :white
+      text_color = :green if p['user']['you_follow']
+
+      p['text'].ansi(text_color)
     end
 
     def line(char = '—')
-      puts "\n"
-      puts "#{char * ANSI::Terminal.terminal_width}".ansi(:black)
+      "#{char * ANSI::Terminal.terminal_width}\n".ansi(:black)
     end
   end
 end
