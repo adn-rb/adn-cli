@@ -22,8 +22,8 @@ module ADN
       trap("INT"){ exit }
 
       loop {
-        sleep 4
         show_global_feed
+        sleep 4
       }
     end
 
@@ -37,13 +37,14 @@ module ADN
     private
 
     def get_global_feed
-      url = 'https://alpha-api.app.net/' +
-            'stream/0/posts/stream/global?' +
-            'count=10&include_directed_posts=1'
+      params = {
+        count: 10,
+        include_directed_posts: 1
+      }
 
-      url += "&since_id=#{@since_id}" unless @since_id.nil?
+      params[:since_id] = @since_id unless @since_id.nil?
 
-      ADN::API.get(url)
+      ADN::API::Post.global_stream(params)
     end
 
     def update_since_id(response)
