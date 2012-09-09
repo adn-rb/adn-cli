@@ -15,6 +15,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = ADN::CLI::VERSION
 
-  gem.add_runtime_dependency('adn', '~> 0.3')
+  gem.add_runtime_dependency('adn', '~> 0.3.4')
   gem.add_runtime_dependency('ansi', '~> 1.4.3')
 end
