@@ -21,7 +21,7 @@ module ADN
 
       trap("INT"){ exit }
 
-      global_stream = GlobalStream.new(get_current_user)
+      global_stream = GlobalStream.new(ADN::User.me)
 
       loop {
         global_stream.show
@@ -29,10 +29,6 @@ module ADN
       }
     rescue SocketError
       exit
-    end
-
-    def get_current_user
-      ADN::User.new(ADN::API::Token.current["user"])
     end
   end
 end
