@@ -20,10 +20,10 @@ module ADN
       end
 
       def show(options)
-        get_global_stream.tap { |r|
+        get_global_stream.tap do |r|
           show_posts(r)
           update_since_id(r)
-        }
+        end
 
         sleep options[:sleep]
       end
@@ -49,10 +49,10 @@ module ADN
       end
 
       def show_posts(response)
-        response['data'].reverse.each { |p|
+        response['data'].reverse.each do |p|
           puts line + post_heading(p) + colorized_text(p)
           puts p['annotations'].to_yaml.ansi(:black) if p['annotations'].any?
-        }
+        end
       end
 
       def post_heading(p)
