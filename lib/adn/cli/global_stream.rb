@@ -20,10 +20,10 @@ module ADN
       end
 
       def show(options)
-        get_global_stream.tap do |r|
+        get_global_stream.tap { |r|
           show_posts(r)
           update_since_id(r)
-        end
+        }
 
         sleep options[:sleep]
       end

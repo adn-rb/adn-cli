@@ -49,10 +49,10 @@ module ADN
             AccessLog: [nil, nil]
           )
 
-          httpd.tap do |s|
+          httpd.tap { |s|
             s.mount "/authorize", WEBrick::HTTPServlet::FileHandler, ADN::Auth::PUBLIC
             s.mount "/save-token", ADN::TokenSaver
-          end
+          }
         end
       end
     end
