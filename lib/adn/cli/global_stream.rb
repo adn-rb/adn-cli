@@ -8,20 +8,29 @@ module ADN
       include ANSI::Code
       include ANSI::Terminal
 
+      def self.start
+        gs = new(ADN::User.me)
+        loop { gs.show sleep: 4 }
+      rescue SocketError
+        exit
+      end
+
       def initialize(user)
         @user = user
       end
 
-      def show
-        get_global_feed.tap { |r|
+      def show(options)
+        get_global_stream.tap { |r|
           show_posts(r)
           update_since_id(r)
         }
+
+        sleep options[:sleep]
       end
 
       private
 
-      def get_global_feed
+      def get_global_stream
         params = {
           count: 10,
           include_directed_posts: 1,
