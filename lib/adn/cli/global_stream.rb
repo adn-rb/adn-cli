@@ -71,12 +71,12 @@ module ADN
         text_color = :green if p['user']['you_follow']
         text_color = :magenta if p['user']['id'] == @user.user_id
 
-        p['entities']['mentions'].tap do |mentions|
+        p['entities']['mentions'].tap { |mentions|
           if mentions.any? &&
              mentions.map { |m| m['id'] }.include?(@user.user_id)
             text_color = :red
           end
-        end
+        }
 
         ANSI.color(text_color) { p['text'] }
       end
