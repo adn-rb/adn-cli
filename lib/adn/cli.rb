@@ -9,26 +9,28 @@ require_relative "cli/version"
 require_relative "cli/global_stream"
 require_relative "auth"
 
+trap("INT"){ exit }
+
 module ADN
   class CLI
     def self.run
       ADN::Auth.retrieve_token unless ADN::Auth.has_token?
-      new(ADN::Auth.token)
+      ADN.token = ADN::Auth.token
+      new
     end
 
-    def initialize(token)
-      ADN.token = token
+    def initialize
+      if ARGV.empty? && STDIN.tty?
+        GlobalStream.start
+      else
+        text = ARGF.read
 
-      trap("INT"){ exit }
-
-      global_stream = GlobalStream.new(ADN::User.me)
-
-      loop {
-        global_stream.show
-        sleep 4
-      }
-    rescue SocketError
-      exit
+        if text.length > 256
+          abort ANSI.color(:red) { "Sorry, max 256 characters" }
+        else
+          ADN::Post.send_post text: text
+        end
+      end
     end
   end
 end
