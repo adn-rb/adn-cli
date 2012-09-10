@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
-require 'pp'
+require 'optparse'
+
 require 'adn'
 require 'ansi/core'
 require 'ansi/table'
@@ -23,14 +24,24 @@ module ADN
       if ARGV.empty? && STDIN.tty?
         GlobalStream.start
       else
-        text = ARGF.read
-
-        if text.length > 256
-          abort ANSI.color(:red) { "Sorry, max 256 characters" }
-        else
-          ADN::Post.send_post text: text
-        end
+        send_post $stdin.read.strip
       end
+    end
+
+    def send_post(text)
+      if text.length > 256
+        abort ANSI.color(:red) { "Sorry, max 256 chars" }
+      end
+
+      data = { text: text }
+
+      OptionParser.new do |opts|
+        opts.on("-r ID") { |id| data[:reply_to] = id }
+      end.parse!
+
+      ADN::Post.send_post data
+    rescue OptionParser::ParseError => e
+      abort "Error: #{e}"
     end
   end
 end
