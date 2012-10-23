@@ -32,10 +32,10 @@ module ADN
       end
 
       def show_posts(response)
-        response['data'].reverse.each { |p|
+        response['data'].reverse.each do |p|
           puts line + post_heading(p) + colorized_text(p)
           puts p['annotations'].to_yaml.ansi(:black) if p['annotations'].any?
-        }
+        end
       end
 
       def post_heading(p)
