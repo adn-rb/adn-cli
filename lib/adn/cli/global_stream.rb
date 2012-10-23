@@ -1,7 +1,5 @@
 # encoding: UTF-8
 
-require 'yaml'
-
 require_relative 'terminal_stream'
 
 module ADN
