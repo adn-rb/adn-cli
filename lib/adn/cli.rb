@@ -22,8 +22,14 @@ module ADN
     end
 
     def initialize
-      if ARGV.empty? && STDIN.tty?
-        UnifiedStream.start
+      if STDIN.tty?
+        if ["-u", "--unified"].include?(ARGV.first)
+          UnifiedStream.start
+        elsif ["-g", "--global"].include?(ARGV.first) || ARGV.empty?
+          GlobalStream.start
+        else
+          puts "Unknown parameters: #{ARGV.inspect}"
+        end
       else
         send_post $stdin.read.strip
       end
