@@ -19,7 +19,17 @@ module ADN
         @user = user
       end
 
-      def show
+
+      def show(options)
+        get_stream.tap do |r|
+          show_posts(r)
+          update_since_id(r)
+        end
+
+        sleep options[:sleep]
+      end
+
+      def get_stream
         raise NoMethodError, "Should be implemented by child class"
       end
 

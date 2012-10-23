@@ -4,7 +4,7 @@ require_relative 'terminal_stream'
 
 module ADN
   class CLI
-    class GlobalStream < TerminalStream
+    class UnifiedStream < TerminalStream
       def get_stream
         params = {
           count: 10,
@@ -14,7 +14,7 @@ module ADN
 
         params[:since_id] = @since_id unless @since_id.nil?
 
-        ADN::API::Post.global_stream(params)
+        ADN::API::Post.unified_stream(params)
       end
     end
   end

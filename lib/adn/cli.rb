@@ -8,6 +8,7 @@ require 'ansi/table'
 
 require_relative "cli/version"
 require_relative "cli/global_stream"
+require_relative "cli/unified_stream"
 require_relative "auth"
 
 trap("INT"){ exit }
@@ -22,7 +23,7 @@ module ADN
 
     def initialize
       if ARGV.empty? && STDIN.tty?
-        GlobalStream.start
+        UnifiedStream.start
       else
         send_post $stdin.read.strip
       end
