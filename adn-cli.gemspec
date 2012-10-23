@@ -8,6 +8,8 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Command line client for App.net}
   gem.homepage      = "https://github.com/adn-rb/adn-cli"
 
+  gem.required_ruby_version = '>= 1.9.2'
+
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
@@ -15,6 +17,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = ADN::CLI::VERSION
 
-  gem.add_runtime_dependency('adn', '~> 0.3.4')
+  gem.add_runtime_dependency('adn', '~> 0.3.5')
   gem.add_runtime_dependency('ansi', '~> 1.4.3')
 end
